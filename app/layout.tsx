@@ -9,9 +9,21 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AdhamZ Portfolio",
+  metadataBase: new URL('https://adhamz.vercel.app/'),
+  title: {
+    default: "AdhamZ Portfolio",
+    template: ''
+  },
   description:
     "Adham's portfolio, a collection of my projects and work experience.",
+  openGraph: {
+    title: 'AdhamZ Portfolio',
+    description: "Adham's portfolio, a collection of my projects and work experience.",
+    type: "profile",
+    locale: "en_US",
+    url: "https://adhamz.vercel.app/",
+    siteName: "AdhamZ"
+  }
 };
 
 export default function RootLayout({

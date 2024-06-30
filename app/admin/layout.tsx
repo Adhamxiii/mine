@@ -7,6 +7,11 @@ type LayoutProps = {
   children: ReactNode;
 };
 
+export const metadata = {
+  title: 'AdhamZ Portfolio - Admin',
+  description: 'Admin dashboard for AdhamZ Portfolio.',
+};
+
 export default function Layout({ children }: LayoutProps) {
   return (
     <main className={cn("flex min-h-screen w-full")}>
