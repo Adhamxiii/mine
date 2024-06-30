@@ -23,9 +23,9 @@ const Navbar = () => {
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center justify-between w-full">
                 <Link href="/admin/dashboard">
-                  <h1 className="text-2xl font-medium">
+                  <p className="text-2xl font-medium">
                     Adham <span className="text-red-500">Nasser</span>
-                  </h1>
+                  </p>
                 </Link>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8 sm:items-center">
