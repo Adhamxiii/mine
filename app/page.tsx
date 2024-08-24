@@ -103,15 +103,20 @@ export default function Home() {
             />
           </Suspense>
 
-          <h3 className="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
+          <p className="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
             Adham Nasser
-          </h3>
+          </p>
 
           <p className="text-gray-500 dark:text-gray-400">Software Engineer</p>
 
           <div className="flex space-x-5 pt-6">
             {socialLinks.map((socialLink) => (
-              <a href={socialLink.href} key={socialLink.name} target="_blank">
+              <a
+                href={socialLink.href}
+                key={socialLink.name}
+                target="_blank"
+                aria-label="{socialLink.name}"
+              >
                 {socialLink.icon}
               </a>
             ))}

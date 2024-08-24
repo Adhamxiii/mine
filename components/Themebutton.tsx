@@ -18,6 +18,7 @@ const Themebutton = () => {
     <button
       onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
       className="bg-red-500/30 p-2 rounded-lg to-red-500"
+      aria-label="Toggle Dark Mode"
     >
       {resolvedTheme === "light" ? (
         <svg
