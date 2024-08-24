@@ -1,4 +1,4 @@
-import  {Schema, models, model } from "mongoose";
+import { Schema, models, model } from "mongoose";
 
 const ProjectSchema = new Schema(
   {
@@ -17,6 +17,13 @@ const ProjectSchema = new Schema(
     category: {
       type: String,
       required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    company_name: {
+      type: String,
     },
     small_overview: {
       type: String,

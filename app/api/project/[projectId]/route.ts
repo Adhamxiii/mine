@@ -29,11 +29,46 @@ export async function PUT(
 ) {
     try {
         await connectToDB();
-        const { searchParams } = new URL(req.url);
-        const id = searchParams.get("id");
         const data = await req.json();
-        const project = await Projects.findByIdAndUpdate(id, data);
+
+        console.log("Data received for update:", data);
+
+        // Prepare the update data
+        const updateData: {
+            title: any;
+            image: any;
+            link: any;
+            category: any;
+            type: any;
+            small_overview: any;
+            company_name?: any;
+        } = {
+            title: data.title,
+            image: data.image,
+            link: data.link,
+            category: data.category,
+            type: data.type,
+            small_overview: data.small_overview,
+        };
+
+        // Include companyName only if the type is "company"
+        if (data.type === "company") {
+            updateData.company_name = data.company_name;
+        }
+
+        console.log("Update data:", updateData);
+
+        const project = await Projects.findByIdAndUpdate(
+            params.projectId,
+            updateData,
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
         if (project) {
+            console.log("Project updated:", project);
             return NextResponse.json({
                 success: true,
                 message: "Project updated successfully",

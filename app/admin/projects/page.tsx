@@ -18,30 +18,29 @@ export interface Project {
   category: string;
   image: string;
   created_at: string;
+  type: string;
+  company_name: string;
 }
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
 
-
   const router = useRouter();
 
   const getProjects = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const res = await axios.get(`/api/project`);
-      console.log(res.data.projects)
-      setProjects(res.data.projects)
-      setLoading(false)
+      setProjects(res.data.projects);
+      setLoading(false);
     } catch (error) {
-      console.log('[projects_GET]', error)
+      console.log("[projects_GET]", error);
     }
-  }
+  };
 
   useEffect(() => {
-    getProjects()
-
+    getProjects();
   }, []);
 
   const deleteHandler = async (id: string) => {
@@ -55,7 +54,7 @@ export default function ProjectsPage() {
   };
 
   const editHandler = (projectId: string) => {
-    router.push(`/admin/projects/${projectId}`)
+    router.push(`/admin/projects/${projectId}`);
   };
 
   const columns: ColumnDef<Record<string, unknown>>[] = [
@@ -76,10 +75,12 @@ export default function ProjectsPage() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center justify-center gap-4">
-            <p className="line-clamp-2 text-ellipsis overflow-hidden">{row.original.small_overview as string}</p>
+            <p className="line-clamp-2 overflow-hidden text-ellipsis">
+              {row.original.small_overview as string}
+            </p>
           </div>
         );
-      }
+      },
     },
     {
       accessorKey: "link",
@@ -92,11 +93,15 @@ export default function ProjectsPage() {
             </Link>
           </div>
         );
-      }
+      },
     },
     {
       accessorKey: "category",
       header: "Category",
+    },
+    {
+      accessorKey: "type",
+      header: "Type",
     },
     {
       accessorKey: "createdAt",
@@ -143,7 +148,9 @@ export default function ProjectsPage() {
     },
   ];
 
-  return loading ? <Loader /> : (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="rounded-lg border bg-card p-5 shadow-sm dark:bg-background">
       <DataTable searchKey="title" data={projects} columns={columns} />
     </div>
