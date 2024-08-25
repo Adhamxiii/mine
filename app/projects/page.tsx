@@ -61,14 +61,14 @@ const ProjectsPage = () => {
           Projects
         </h1>
 
-        <Tabs defaultValue="all" className="w-fit" onValueChange={setFilter}>
+        {/* <Tabs defaultValue="all" className="w-fit" onValueChange={setFilter}>
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="personal">Personal</TabsTrigger>
             <TabsTrigger value="company">Company</TabsTrigger>
             <TabsTrigger value="freelance">Freelance</TabsTrigger>
           </TabsList>
-        </Tabs>
+        </Tabs> */}
       </div>
 
       <div className="grid gap-y-8 pb-6 pt-8 sm:grid-cols-2 sm:gap-6 md:gap-6 lg:grid-cols-3 lg:gap-10">
