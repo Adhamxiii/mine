@@ -11,11 +11,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://adhamz.vercel.app/"),
   title: {
-    default: "Adham Z - Software Engineer Portfolio",
-    template: "Adham Z - %s",
+    default: "Adham - Software Engineer",
+    template: "Adhamz - %s",
   },
   description:
-    "Welcome to Adham Z's portfolio! Discover web development projects, creative designs, and professional experiences that highlight my skills and expertise in building modern, responsive websites.",
+    "Welcome to Adham's portfolio! Discover web development projects, creative designs, and professional experiences that highlight my skills and expertise in building modern, responsive websites.",
   openGraph: {
     title: "Adham Nasser",
     description:
