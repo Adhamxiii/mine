@@ -1,5 +1,7 @@
 import connectToDB from "@/database";
 import Projects from "@/models/Projects";
+import { getToken } from "next-auth/jwt";
+import { getSession } from "next-auth/react";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, { params }: { params: { projectId: string } }) => {
@@ -24,10 +26,16 @@ export const GET = async (req: NextRequest, { params }: { params: { projectId: s
 };
 
 export async function PUT(
-    req: Request,
+    req: NextRequest,
     { params }: { params: { projectId: string } }
 ) {
     try {
+        const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+        if (!token) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
         await connectToDB();
         const data = await req.json();
 
@@ -42,6 +50,7 @@ export async function PUT(
             type: any;
             small_overview: any;
             company_name?: any;
+            isPined?: any
         } = {
             title: data.title,
             image: data.image,
@@ -49,6 +58,7 @@ export async function PUT(
             category: data.category,
             type: data.type,
             small_overview: data.small_overview,
+            isPined: data.isPined
         };
 
         // Include companyName only if the type is "company"

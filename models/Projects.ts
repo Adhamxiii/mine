@@ -29,6 +29,10 @@ const ProjectSchema = new Schema(
       type: String,
       required: true,
     },
+    isPined: {
+      type: Boolean,
+      default: false,
+    }
   },
   {
     timestamps: true,

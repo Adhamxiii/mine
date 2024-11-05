@@ -1,13 +1,15 @@
 "use client";
 
 import Loader from "@/components/Loader";
-import { getProjects } from "@/lib/actions";
+import { getProjects, updateProject } from "@/lib/actions";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { Pin, PinOff } from "lucide-react";
 
-interface Project {
+export interface Project {
   _id: string;
   title: string;
   small_overview: string;
@@ -16,6 +18,7 @@ interface Project {
   category: string;
   type: string;
   company_name: string;
+  isPined: boolean;
 }
 
 export const dynamic = "force-dynamic";
@@ -24,17 +27,50 @@ const ProjectsPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const { data, status } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await getProjects();
       setProjects(
-        res.projects.sort((a: any, b: any) => (a.id > b.id ? 1 : -1)),
+        res.projects.sort(
+          (a: Project, b: Project) =>
+            (b.isPined ? 1 : 0) - (a.isPined ? 1 : 0) ||
+            (a._id < b._id ? 1 : -1),
+        ),
       );
       setLoading(false);
     };
     fetchData();
   }, []);
+
+  const handlePinToggle = async (
+    projectId: string,
+    currentPinnedState: boolean,
+  ) => {
+    if (status === "authenticated" && data.user.role === "admin") {
+      try {
+        await updateProject(projectId, { isPined: !currentPinnedState });
+        setProjects((prevProjects) =>
+          prevProjects
+            .map((project) =>
+              project._id === projectId
+                ? { ...project, isPined: !currentPinnedState }
+                : project,
+            )
+            .sort(
+              (a, b) =>
+                (b.isPined ? 1 : 0) - (a.isPined ? 1 : 0) ||
+                (a._id < b._id ? 1 : -1),
+            ),
+        );
+      } catch (error) {
+        console.error("Failed to update project pin status:", error);
+      }
+    }
+  };
+
+  console.log(projects);
 
   const jsStyle =
     "capitalize text-amber-500 hover:text-amber-500 dark:text-amber-400 dark:hover:text-amber-500";
@@ -81,13 +117,27 @@ const ProjectsPage = () => {
             key={project._id}
             className={`${
               project.title === "HeroTodo" && disabledStyle
-            } overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg shadow-red-100 dark:border-zinc-600 dark:bg-black dark:shadow-gray-700`}
+            } relative overflow-hidden rounded-lg border border-gray-100 bg-white shadow-lg shadow-red-100 dark:border-zinc-600 dark:bg-black dark:shadow-gray-700`}
           >
+            {(status === "authenticated" || project.isPined) && (
+              <div
+                className={`absolute right-2 top-2 z-10 flex size-6 items-center justify-center rounded-lg text-white
+                  transition-all duration-300 ease-in-out
+                  ${project.isPined ? "bg-red-500 rotate-0" : "rotate-45"}
+                  ${status === "authenticated" ? "cursor-pointer hover:bg-red-500" : "cursor-not-allowed"}`}
+                onClick={() => status === "authenticated" && handlePinToggle(project._id, project.isPined)}
+              >
+                <div className="transition-transform duration-300 ease-in-out">
+                  {project.isPined ? <Pin size={14} /> : <PinOff size={14} />}
+                </div>
+              </div>
+            )}
             <div className="relative h-56 w-full">
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
+                sizes="(max-width: 768px) 100vw,"
                 className="h-full w-full object-cover"
               />
             </div>

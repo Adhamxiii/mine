@@ -1,4 +1,7 @@
+import { Project } from "@/app/projects/page";
 import axios from "axios";
+
+import { getSession } from "next-auth/react";
 
 export const getProjects = async () => {
     try {
@@ -41,5 +44,23 @@ export const getEducation = async () => {
     } catch (error) {
         console.error("Error fetching education:", error);
         return [];
+    }
+};
+
+export const updateProject = async (projectId: string, updateData: any) => {
+    try {
+        const session = await getSession();
+        if (!session) {
+            throw new Error('You must be logged in to update a project.');
+        }
+
+        const response = await axios.put(`/api/project/${projectId}`, {
+            isPined: updateData.isPined // Send only isPined
+    });
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error updating project:', error.response ? error.response.data : error.message);
+        throw error;
     }
 };

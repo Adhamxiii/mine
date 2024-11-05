@@ -1,6 +1,3 @@
-export interface Project {
-
-}
 
 export interface Skill {
     _id: string,
